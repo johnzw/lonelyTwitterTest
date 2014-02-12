@@ -1,9 +1,11 @@
 package ca.ualberta.cs.lonelytwitter.test;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.ViewAsserts;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -15,11 +17,12 @@ import ca.ualberta.cs.lonelytwitter.NormalTweetModel;
  * generate this class with new.. JUnit Test Case
  * set superclass to ActivityInstrumentationTestCase2
  */
+@SuppressLint("NewApi")
 public class LonelyTwitterActivityUITest extends
 		ActivityInstrumentationTestCase2<LonelyTwitterActivity> {
 
 	Instrumentation instrumentation;
-	Activity activity;
+	LonelyTwitterActivity activity;
 	EditText textInput;
 	
 	public LonelyTwitterActivityUITest() {
@@ -34,6 +37,34 @@ public class LonelyTwitterActivityUITest extends
 		textInput = ((EditText) activity.findViewById(ca.ualberta.cs.lonelytwitter.R.id.body));
 	}
 	
+	public void testAdapter() throws Throwable{
+		runTestOnUiThread(new Runnable(){
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				makeTweet("hi there #testing");
+				
+			}
+		});
+	}
+	
+	public void testAddTweet() throws Throwable{
+		
+			runTestOnUiThread(new Runnable(){
+
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					
+					ArrayAdapter<NormalTweetModel> adapter = activity.getAdapter();
+					int numberOfElement = adapter.getCount();
+					makeTweet("hi there #testing");
+					int newNum = adapter.getCount();
+					assertEquals("The number of elements increment", newNum, numberOfElement+1);
+				}
+			});
+	}
 	/*
 	 * fills in the input text field and clicks the 'save'
 	 * button for the activity under test

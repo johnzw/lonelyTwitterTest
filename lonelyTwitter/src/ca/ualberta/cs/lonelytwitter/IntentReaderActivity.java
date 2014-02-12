@@ -18,13 +18,19 @@ public class IntentReaderActivity extends Activity {
 	private int mode;
 	
 	public String getText() {
-		return text;
+		return transformText(text);
 	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_intent_reader);
+		
+		Intent intent = getIntent();
+		mode = intent.getIntExtra(TRANSFORM_KEY, NORMAL);
+		text = intent.getStringExtra(TEXT_KEY);
+		TextView textView = (TextView) findViewById(R.id.intentText);
+		textView.setText(text);
 	}
 	
 	public String transformText(String text) {
